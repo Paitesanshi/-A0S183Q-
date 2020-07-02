@@ -17,3 +17,8 @@
 学习了flask的如何进行debug模式
 flask的路由的简单配置
 flask的重定向
+
+7.2
+学习了flask的动态路由配置，如何为路由指定支持的http方法
+正在学习如何构建flask微服务架构
+安装mysql库 打算用mysql储存用户登陆等信息
