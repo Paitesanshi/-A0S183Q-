@@ -22,3 +22,9 @@ flask的重定向
 学习了flask的动态路由配置，如何为路由指定支持的http方法
 正在学习如何构建flask微服务架构
 安装mysql库 打算用mysql储存用户登陆等信息
+
+7.3
+正在学习flask的页面设计 在网络上寻找相关例子
+尝试实现例子但发现例子运用的sqlaichemy 实现失败
+从网上查找mysql的使用方法
+单单改动sqlaichemy为mysql没法实现 还得再做尝试
