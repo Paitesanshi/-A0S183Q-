@@ -261,23 +261,6 @@ def usercenter(user_id, tag):
         return render_template('usercenter3.html', **context)
 
 
-# # 搜索框带参数搜素显示在首页
-# @app.route('/search/')
-# def search():
-#     qu = request.args.get('q')
-#     qus = request.args.get('p')
-#     ques = Question.query.filter(
-#         or_(
-#             Question.title.contains(qu),
-#             Question.detail.contains(qu),
-#             Question.classify.contains(qus)
-#             )
-#
-#
-#     ).order_by('-time')
-#     return render_template('index.html', questions=ques)
-
-
 # 修改密码
 @app.route('/edit_password/', methods=['GET', 'POST'])
 def edit_password():
