@@ -23,6 +23,7 @@
     <div id='main'></div>
 </body>
 <script>
+    var area;
     let geoCoordMap = {
         "海门": [121.15, 31.89],
         "鄂尔多斯": [109.781327, 39.608266],
@@ -243,10 +244,10 @@
         },
         tooltip: {
             show: true,
-            // formatter:(params)=>{
-            //   let data = "测试1:"+params.name + "<br/>"+"值:"+ params.value[2]+"<br/>"+"地理坐标:[" + params.value[0]+","+params.value[1] +"]";
-            //   return data;
-            // },
+            formatter: (params) => {
+                let data = "测试1:" + params.name + "<br/>" + "值:" + params.value[2] + "<br/>" + "地理坐标:[" + params.value[0] + "," + params.value[1] + "]";
+                return data;
+            },
         },
         visualMap: [{
             type: 'continuous',
@@ -288,10 +289,14 @@
             },
             emphasis: { //当鼠标放上去  地区区域是否显示名称
                 label: {
+                    formatter: function(params) {
+                        area = params.name;
+                        return params.name;
+                    },
                     show: true,
                     textStyle: {
-                        color: '#fff',
-                        fontSize: 3,
+                        color: 'black',
+                        fontSize: 50,
                         backgroundColor: 'rgba(0,23,11,0)'
                     }
                 }
@@ -345,32 +350,40 @@
                     borderWidth: 0.5,
                     borderColor: '#fff'
                 },
-                data: convertData([{
-                    name: "阳泉",
-                    value: (90).toFixed(2) //标识与地图的相对位置
-                }, {
-                    name: "莱州",
-                    value: ((Math.random() * 100) + 50).toFixed(2)
-                }, {
-                    name: "湖州",
-                    value: ((Math.random() * 100) + 50).toFixed(2)
-                }, {
-                    name: "汕头",
-                    value: ((Math.random() * 100) + 50).toFixed(2)
-                }, {
-                    name: "昆山",
-                    value: ((Math.random() * 100) + 50).toFixed(2)
-                }, {
-                    name: "银川",
-                    value: ((Math.random() * 100) + 50).toFixed(2)
-                }, {
-                    name: "兰州",
-                    value: (90).toFixed(2)
-                }])
+                // data: convertData([{
+                //     name: "阳泉",
+                //     value: (90).toFixed(2) //标识与地图的相对位置
+                // }, {
+                //     name: "莱州",
+                //     value: ((Math.random() * 100) + 50).toFixed(2)
+                // }, {
+                //     name: "湖州",
+                //     value: ((Math.random() * 100) + 50).toFixed(2)
+                // }, {
+                //     name: "汕头",
+                //     value: ((Math.random() * 100) + 50).toFixed(2)
+                // }, {
+                //     name: "昆山",
+                //     value: ((Math.random() * 100) + 50).toFixed(2)
+                // }, {
+                //     name: "银川",
+                //     value: ((Math.random() * 100) + 50).toFixed(2)
+                // }, {
+                //     name: "兰州",
+                //     value: (90).toFixed(2)
+                // }])
             }
         ]
     }
-    echarts.init(document.getElementById('main')).setOption(option);
+    var mycharts = echarts.init(document.getElementById('main'))
+    mycharts.setOption(option);
+    mycharts.getZr().on('click', function(clickparams) {
+        let isinside = $('#main').children()[0].style.cursor;
+        if (area !== '' && isinside == "pointer") {
+            console.log(area);
+        }
+
+    });
 </script>
 
 </html>
