@@ -1,0 +1,1 @@
+print("mse is",mean_squared_error(test['y'].values,forecast['yhat'].values[trainsize:df.shape[0]]))
