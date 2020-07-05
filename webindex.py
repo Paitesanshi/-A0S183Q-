@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template, redirect, url_for, request, session
 import config
 from flask_sqlalchemy import SQLAlchemy
+import pymysql
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -12,11 +13,9 @@ def china():
     if request.method == 'GET':
         return render_template('china.html')
 
-url_for('static',filename='static/js/login.js')
-
 @app.route('/')
 def index():
-    return render_template("base.html")
+    return 'hello'
 
 
 # 登陆
@@ -27,7 +26,9 @@ def login():
     else:
         username = request.form.get('id')  # 与html页面名字相同
         password = request.form.get('password')
+        print(username,password)
         user = User.query.filter(User.username == username,User.password==password).first()
+        print(user)
         if user:
             session['username']=username
             session.permanent=True
@@ -66,20 +67,20 @@ db.create_all()
 #数据查询方法
 User.query.filter(User.username == 'mis1114').first()
 
-#数据添加方法
-user = User(username='wl097tql',password='g6666')
-db.session.add(user)
-db.session.commit()
-
-# 数据的修改方法
-user = User.query.filter(User.username=='wl097tql').first
-user.password='0.0.0.0'
-db.session.commit()
-
-# 数据的删除方法
-user = User.query.filter(User.username=='wl097tql').first()
-db.session.delete(user)
-db.session.commit()
+# #数据添加方法
+# user = User(username='wl097tql',password='g6666')
+# db.session.add(user)
+# db.session.commit()
+#
+# # 数据的修改方法
+# user = User.query.filter(User.username=='wl097tql').first
+# user.password='250250'
+# db.session.commit()
+#
+# # 数据的删除方法
+# user = User.query.filter(User.username=='wl097tql').first()
+# db.session.delete(user)
+# db.session.commit()
 
 @app.context_processor
 def mycontext():

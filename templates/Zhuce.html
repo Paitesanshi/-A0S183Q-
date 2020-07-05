@@ -16,7 +16,7 @@
             overflow: hidden;
             margin: 0;
             padding: 0;
-            background: url("back.jpg") no-repeat 0px 0px;
+            background: url("../static/img/back.jpg") no-repeat 0px 0px;
             background-repeat: no-repeat;
             background-size: 100% 100%;
             -moz-background-size: 100% 100%;
@@ -120,13 +120,6 @@
             <p>确认密码:<input id="surePassword" type="password" required><label id="surePassword_trip"></label></p>
 
 
-            <div class="sexDiv">
-                用户性别:
-                <input class="userSex" name="sex" value="boy" type="radio">男
-                <input class="userSex" name="sex" value="girl" type="radio">女
-                <label id="sex_trip"></label>
-            </div>
-
             <p>
                 出生日期:
                 <input id="birthday" type="date">
@@ -136,6 +129,9 @@
             <p style="text-align: center;">
                 <input type="submit" class="button" onblur="checkForm()" onclick="return submitT()" value="提交">
                 <input type="reset" class="button" value="重置">
+            </p>
+            <p>
+                已有账号？<a href="login">请登录</a>
             </p>
         </form>
     </div>
