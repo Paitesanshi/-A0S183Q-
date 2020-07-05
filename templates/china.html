@@ -306,7 +306,7 @@
                     },
                     show: true,
                     textStyle: {
-                        color: 'black',
+                        color: 'white',
                         fontSize: 50,
                         backgroundColor: 'rgba(0,23,11,0)'
                     }
@@ -391,6 +391,7 @@
     mycharts.getZr().on('click', function(clickparams) {
         let isinside = $('#main').children()[0].style.cursor;
         if (area !== '' && isinside == "pointer") {
+            window.location.href="infor"
             console.log(area);
         }
 

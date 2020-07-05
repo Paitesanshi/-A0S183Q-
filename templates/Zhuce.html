@@ -1,10 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>register</title>
-    <style>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" >
+<title>×¢²á</title>
+<meta http-equiv='content-type' content='text/html;charset=utf-8'>
+  <script type='text/javascript' src='jquery-1.7.2.js'></script>
+    <script type='text/javascript'>
+       var code ; //ÔÚÈ«¾Ö¶¨ÒåÑéÖ¤Âë
+
+        function createCode(){
+             code = "";
+             var codeLength = 4;//ÑéÖ¤ÂëµÄ³¤¶È
+             var checkCode = document.getElementById("code");
+             var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
+             'S','T','U','V','W','X','Y','Z');//Ëæ»úÊı
+             for(var i = 0; i < codeLength; i++) {//Ñ­»·²Ù×÷
+                var index = Math.floor(Math.random()*36);//È¡µÃËæ»úÊıµÄË÷Òı£¨0~35£©
+                code += random[index];//¸ù¾İË÷ÒıÈ¡µÃËæ»úÊı¼Óµ½codeÉÏ
+            }
+            checkCode.value = code;//°ÑcodeÖµ¸³¸øÑéÖ¤Âë
+        }
+        //Ğ£ÑéÑéÖ¤Âë
+        function validate(){
+
+			var password=document.getElementById("password").value;
+			var password1=document.getElementById("password1").value;
+			if(password!=password1){
+				alert("ÃÜÂëÇ°ºó²»Í¬£¡");
+				return false;
+			}
+			else if (password.length<8){
+				alert("ÃÜÂëÖÁÉÙÎª8Î»£¡");
+				return false;
+				}
+            var inputCode = document.getElementById("input").value.toUpperCase(); //È¡µÃÊäÈëµÄÑéÖ¤Âë²¢×ª»¯Îª´óĞ´
+            if(inputCode.length <= 0) { //ÈôÊäÈëµÄÑéÖ¤Âë³¤¶ÈÎª0
+                alert("ÇëÊäÈëÑéÖ¤Âë£¡"); //Ôòµ¯³öÇëÊäÈëÑéÖ¤Âë
+            }else if(inputCode != code ) { //ÈôÊäÈëµÄÑéÖ¤ÂëÓë²úÉúµÄÑéÖ¤Âë²»Ò»ÖÂÊ±
+                alert("ÑéÖ¤ÂëÊäÈë´íÎó£¡@_@"); //Ôòµ¯³öÑéÖ¤ÂëÊäÈë´íÎó
+                createCode();//Ë¢ĞÂÑéÖ¤Âë
+                document.getElementById("input").value = "";//Çå¿ÕÎÄ±¾¿ò
+            }else { //ÊäÈëÕıÈ·Ê±
+                alert("ºÏ¸ñ£¡^-^");
+            }
+        }
+        </script>
+        <style type='text/css'>
+        #code{
+            font-family:Arial,ËÎÌå;
+            font-style:italic;
+            color:blue;
+            size:12px;
+            border:0;
+            padding:2px 3px;
+            letter-spacing:8px;
+            font-weight:bolder;
+        }
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -57,7 +109,9 @@
             width: 30px;
             height: 17px;
         }
-
+        font{
+            color: white;
+        }
         input,
         select {
             margin-left: 15px;
@@ -106,133 +160,38 @@
             font-size: 10px;
             font-weight: initial;
         }
-    </style>
+        </style>
 </head>
 
-<body>
-    <div id="loginDiv">
-        <form action="">
-            <h1>REGESTER</h1>
-            <p>ç”¨æˆ·å§“å:<input id="userNname" type="text" autofocus required><label id="name_trip"></label></p>
-
-            <p>ç”¨æˆ·å¯†ç :<input id="password" type="password" required><label id="password_trip"></label></p>
-
-            <p>ç¡®è®¤å¯†ç :<input id="surePassword" type="password" required><label id="surePassword_trip"></label></p>
-
+<body onload='createCode()'>
+<div class="loginDiv" style=" width: 37%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 650px;
+            background-color: rgba(75, 81, 95, 0.3);
+            box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
+            border-radius: 5px;">
+<table border=0><tr><th>
+<form >
+<table border=0 height=400 >
+    <tr><th height=65><font  size='4'>ÓÃ »§ Ãû</font></th><th><input type="text" style="height:40px" placeholder="ÇëÊäÈëÓÃ»§Ãû" size=40 name="username"></th></tr>
+    <tr><th height=65><font  size='4'>ÃÜ    Âë</font>></th><th><input type="password" style="height:40px" placeholder="ÃÜÂë³¤¶ÈÎª6~18×Ö·û" size=40 id="password"></th></tr>
+    <tr><th height=65><font  size='4'>È·ÈÏÃÜÂë</font>></th><th><input type="password" style="height:40px" placeholder="ÇëÖØĞÂÊäÈëÃÜÂë" size=40 id="password1"></th></tr>
+    <tr><div><th><font  size='4'>Ñé Ö¤ Âë</font>></th><th>
+            <input type = "text" id = "input" style="height:40px;width:220px"/>
+            <input type="button" id="code" onclick="createCode()" style="height:40px;width:80px" title='µã»÷¸ü»»ÑéÖ¤Âë' />
+            <!--<input type = "button"  style="height:40px"  value = "ÑéÖ¤" onclick = "validate()"/> -->
+			</th>
+        </div>  </tr>
 
             <p>
-                å‡ºç”Ÿæ—¥æœŸ:
-                <input id="birthday" type="date">
-                <label id="birthday_trip"></label>
+                Èç¹ûÓĞÕËºÅ£¿<a href="base">ÇëµÇÂ½</a>
             </p>
-
-            <p style="text-align: center;">
-                <input type="submit" class="button" onblur="checkForm()" onclick="return submitT()" value="æäº¤">
-                <input type="reset" class="button" value="é‡ç½®">
-            </p>
-            <p>
-                å·²æœ‰è´¦å·ï¼Ÿ<a href="login">è¯·ç™»å½•</a>
-            </p>
-        </form>
+<tr><th colspan=2 height=65><input type='submit' style="background-color: rgba(100, 149, 237, .7);height:55px;width:160px;font-size:25px;color:white;border:none" value='×¢²á'id='l' onclick = "validate()" ></th></tr>
+</table>
+</form>
+</th></tr></table>
     </div>
-
 </body>
-<script type="text/javascript">
-     function trip(obj, trip) {
-        document.getElementById(obj).innerHTML = "<b>" + trip + "</b>";
-     }
-
-     function checkSex() {
-        var sexNum = document.getElementsByName("sex");
-        var sex = "";
-        for (let i = 0; i < sexNum.length; ++i) {
-            if (sexNum[i].checked) {
-                sex = sexNum[i];
-            }
-
-        }
-        if (sex == "") {
-            trip("sex_trip", "ERROR!!");
-            return false;
-        } else {
-            trip("sex_trip", "OK!!");
-        }
-     }
-
-     function checkHobby() {
-        var hobbyNum = document.getElementsByName("hobby");
-        var hobby = "";
-        for (let i = 0; i < hobbyNum.length; ++i) {
-            if (hobbyNum[i].checked) {
-                hobby = hobbyNum[i];
-            }
-        }
-        if (hobby == "") {
-            trip("hobby_trip", "ERROR!!");
-            return false;
-        } else {
-            trip("hobby_trip", "OK!!");
-
-        }
-     }
-
-     function checkSelect() {
-        var myselect = document.getElementById("userType");
-        var index = myselect.selectedIndex;
-        var checkValue = myselect.options[index].value;
-        if (checkValue == 0) {
-            trip("type_trip", "è¯·é€‰æ‹©!!");
-            return false;
-        } else {
-            trip("type_trip", "OK!!");
-        }
-     }
-
-     function checkForm() {
-        checkSelect();
-        checkHobby();
-        checkSex();
-
-        var trip = document.getElementsByName("em");
-        var tripV = trip.innerHTML();
-        //è·å–ç”¨æˆ·åè¾“å…¥é¡¹
-        var userNname = document.getElementById("userNname");
-        var uName = userNname.value;
-        if (uName.length < 1 || uName.length > 10) {
-            trip("name_trip", "è´¦å·é•¿åº¦ä¸º1-10ä½!!");
-            return false;
-        } else {
-            trip("name_trip", "OK!!");
-
-        }
-
-        //å¯†ç é•¿åº¦å¤§äº6 å’Œç¡®è®¤å¿…é¡»ä¸€è‡´
-        var password = document.getElementById("password");
-        var userPass = password.value;
-        if (userPass.length < 6) {
-            trip("password_trip", "å¯†ç è¦>6ä½!!");
-            return false;
-        } else {
-            trip("password_trip", "OK!!");
-        }
-
-        //è·å–ç¡®è®¤å¯†ç æ¡†çš„å€¼ var
-        var surePassword = document.getElementById("surePassword");
-        var surePass = surePassword.value;
-        if (userPass != surePass) {
-            trip("surePassword_trip", "ä¸¤æ¬¡å¯†ç ä¸ä¸€è‡´!!");
-            return false;
-        }
-
-        return true;
-     }
-
-     function submitT() {
-        if (checkForm()) {
-            return true;
-        } else {
-            return false;
-        }
-     }
-</script>
 </html>

@@ -10,19 +10,22 @@ db=SQLAlchemy(app)
 
 @app.route('/china')
 def china():
-    if request.method == 'GET':
-        return render_template('china.html')
+    return render_template('china.html')
 
 @app.route('/')
 def index():
-    return 'hello'
+    return redirect(url_for('login'))
+
+@app.route('/infor')
+def infor():
+    return render_template('check.html')
 
 
 # 登陆
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('base.html')
     else:
         username = request.form.get('id')  # 与html页面名字相同
         password = request.form.get('password')
@@ -32,7 +35,7 @@ def login():
         if user:
             session['username']=username
             session.permanent=True
-            return redirect(url_for('index'))
+            return redirect(url_for('china'))
         else:
             return '用户不存在'
 # 注册
@@ -40,7 +43,7 @@ def login():
 def register():
     if request.method=='GET':
 
-        return render_template('Zhuce.html')
+        return render_template('zhuce1.html')
     else:
 
         username=request.form.get('zcid')#与html页面名字相同

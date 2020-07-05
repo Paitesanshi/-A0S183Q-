@@ -1,0 +1,70 @@
+body {
+background-color: #c1bdba;
+padding:0px;
+font-size:15px;
+font-weight: bold;
+font-family:'Open Sans', sans-serif;
+}
+.form_content{
+width:575px;
+margin:30px auto;
+padding:10px;
+background-color: white;
+}
+input{
+	position: absolute;
+	left: 688px;
+}
+.title {
+   text-align: center;
+    line-height: 60px;
+    letter-spacing: 3px;
+    width: 100%;
+  font-size: 60px;
+  font-weight: 800;
+  background: url("https://images.blogthings.com/thecolorfulpatterntest/pattern-2.png") no-repeat center center;
+  background-size: 200px;
+  color: #fff;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+/*   background-image: -webkit-linear-gradient(transparent, transparent); */
+ /*background-image: -webkit-linear-gradient(transparent, transparent),
+                    url("https://images.blogthings.com/thecolorfulpatterntest/pattern-2.png");*/
+}
+#female{
+	position: absolute;
+	left: 766px;
+}
+#malela{
+	position: absolute;
+	left: 708px;
+}
+#femalela{
+	position: absolute;
+	left: 790px;
+}
+#submit{
+	position: absolute;
+	left: 600px;
+	top: 1850px;
+}
+#reset{
+	position: absolute;
+	left: 850px;
+	top: 1850px;
+}
+.logdiv{
+	position: absolute;
+	width: 100px;
+	height: 60px;
+	font-size:30px;
+	right: 20px;
+	top: 0px;
+}
+#logo{
+	position: absolute;
+	left: 30px;
+	width: 60px;
+	height: 60px;
+	top: 0px;
+}
