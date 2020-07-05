@@ -43,5 +43,6 @@ flask的重定向
 pymysql.err.InternalError: (1862, 'Your password has expired. To log in you must change it using a c
 重设mysql密码报错
 pymysql.err.InternalError: (1049, "Unknown database 'test_db'"）
-未解决
+未解决(暂时搁置)
 AttributeError: 'method' object has no attribute 'password'
+完成了页面间的跳转，与组员组长一起对html js css 文件进行修改
