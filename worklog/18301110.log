@@ -35,3 +35,13 @@ flask的重定向
 与组长完成了3d地图网页的样子
 正在完成注册界面样子
 正在进行mysql与pycharm间的连接
+
+7.5
+连接mysql数据库时出现多处报错：
+已解决
+'latin-1' codec can't encode characters
+pymysql.err.InternalError: (1862, 'Your password has expired. To log in you must change it using a c
+重设mysql密码报错
+pymysql.err.InternalError: (1049, "Unknown database 'test_db'"）
+未解决
+AttributeError: 'method' object has no attribute 'password'
