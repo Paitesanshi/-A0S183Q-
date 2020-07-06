@@ -2,11 +2,15 @@ from flask import Flask
 from flask import render_template, redirect, url_for, request, session
 import config
 from flask_sqlalchemy import SQLAlchemy
-import pymysql
-
+from flask_socketio import SocketIO, emit
+import flask
+from flask_socketio import SocketIO
+import json
+import psutil
 app = Flask(__name__)
 app.config.from_object(config)
 db=SQLAlchemy(app)
+socketio = SocketIO(app)
 
 @app.route('/china')
 def china():
@@ -20,7 +24,10 @@ def index():
 def infor():
     return render_template('check.html')
 
-
+@socketio.on('my_event', namespace='/test')
+def getarea(data):
+    area=json.loads(data)
+    print(area)
 # 登陆
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -56,6 +63,8 @@ def register():
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
+
+
 
 # 开始创建用户模型，即在数据库中创建表格：
 class User(db.Model):

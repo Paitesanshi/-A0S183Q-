@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
     <title>3D中国</title>
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/echarts.min.js"></script>
-    <script src="static/js/echarts-gl.js"></script>
-    <script src='static/js/china.js'></script>
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/echarts.min.js"></script>
+    <script src="../static/js/echarts-gl.js"></script>
+    <script src='../static/js/china.js'></script>
+    <script type="text/javascript" src="../static/js/socket.io.min.js"></script>
+    <!-- ECharts 3 引入 -->
+
     <style>
         #main {
             width: 1000px;
@@ -16,6 +19,7 @@
             margin: auto;
             border: 2px solid green;
         }
+        
         html {
             height: 100%;
             width: 100%;
@@ -388,13 +392,24 @@
     }
     var mycharts = echarts.init(document.getElementById('main'))
     mycharts.setOption(option);
+    $(document).ready(function() {
+        namespace = '/test';
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        socket.on('server_response', function(res) {
+
+        });
+
+    })
     mycharts.getZr().on('click', function(clickparams) {
         let isinside = $('#main').children()[0].style.cursor;
         if (area !== '' && isinside == "pointer") {
-            window.location.href="infor"
+            socket.emit('my_event', JSON.stringify({
+                "area": area
+            }));
+            window.location.href = "infor"
             console.log(area);
-        }
 
+        }
     });
 </script>
 
