@@ -46,3 +46,8 @@ pymysql.err.InternalError: (1049, "Unknown database 'test_db'"）
 未解决(暂时搁置)
 AttributeError: 'method' object has no attribute 'password'
 完成了页面间的跳转，与组员组长一起对html js css 文件进行修改
+
+7.6
+与组长一起进行flask的websocket调试 还未调试完成
+在网上查找如何构建flask微服务框架 如何实现java的连接
+还没有查找到明白的教程
