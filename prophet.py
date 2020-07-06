@@ -48,8 +48,10 @@ plt.plot(forecast['ds'], forecast['yhat'])
 plt.show()
 #6、模型评估
 print("mse is",mean_squared_error(test['y'].values,forecast['yhat'].values[trainsize:dfmin.shape[0]]))
-
-
+result=pd.DataFrame()
+result['date']=forecast['ds']
+result['tmin']=forecast['yhat']
+result.to_csv("result_min.csv")
 
 trainsize = int(dfmax.shape[0]*0.9)
 train = dfmax[0:trainsize]
@@ -80,6 +82,10 @@ graph = plt.figure(figsize=(10, 4))
 ax = graph.add_subplot(1,1,1)
 #ax.set(title='Total_Purchase_Amt', ylabel='Unit (Fahrenheit)', xlabel='Date')
 plt.plot(forecast['ds'], forecast['yhat'])
-plt.show()
+#plt.show()
 #6、模型评估
 print("mse is",mean_squared_error(test['y'].values,forecast['yhat'].values[trainsize:dfmax.shape[0]]))
+
+result['date']=forecast['ds']
+result['tmin']=forecast['yhat']
+result.to_csv("result_max.csv")
