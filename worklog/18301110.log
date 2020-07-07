@@ -57,3 +57,4 @@ AttributeError: 'method' object has no attribute 'password'
 继续学习flask如何连接java
 学习HTTP Restful Services 
 下载中国各省会城市1951年到2020年7月1日的气候数据
+整理气候数据，交付组员进行数据清洗
