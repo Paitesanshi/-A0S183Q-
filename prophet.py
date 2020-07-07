@@ -88,4 +88,4 @@ print("mse is",mean_squared_error(test['y'].values,forecast['yhat'].values[train
 
 result['date']=forecast['ds']
 result['tmin']=forecast['yhat']
-result.to_csv("result_max.csv")
+result.to_csv("result_max.csv",index=None)
