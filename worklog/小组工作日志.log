@@ -32,3 +32,9 @@
 王磊为flask初步添加websocket进行json数据传输。
 吴明昊研究完善flask微服务框架和java的调用关系。
 韦永剑将已有网页迁移到javaSpring中，并进行用户数据与数据库的连接。
+7.7 day9
+申淳元在阿里云个人服务器端正在搭建环境。
+燕怡楠调试GRU将mse降低至1一下。
+王磊为flask添加websocket传输，和网页进行数据交互。
+吴明昊学习flask和java进行网络连接，在网站获取各省会数据，并进行处理。
+韦永剑利用Javaspring MVC调用html和js文件，网络连接。
