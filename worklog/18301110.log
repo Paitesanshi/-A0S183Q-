@@ -51,3 +51,9 @@ AttributeError: 'method' object has no attribute 'password'
 与组长一起进行flask的websocket调试 还未调试完成
 在网上查找如何构建flask微服务框架 如何实现java的连接
 还没有查找到明白的教程
+
+7.7
+与组长继续进行websocket的调试 调试基本完成
+继续学习flask如何连接java
+学习HTTP Restful Services 
+下载中国各省会城市1951年到2020年7月1日的气候数据
