@@ -9,7 +9,7 @@
     <script src="../static/js/echarts.min.js"></script>
     <script src="../static/js/echarts-gl.js"></script>
     <script src='../static/js/china.js'></script>
-    <script type="text/javascript" src="../static/js/socket.io.min.js"></script>
+    <script type="text/javascript" src="../static/js/socket.io.dev.js"></script>
     <!-- ECharts 3 引入 -->
 
     <style>
@@ -395,21 +395,22 @@
     $(document).ready(function() {
         namespace = '/test';
         var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        console.log(socket)
+        socket.emit("1111")
         socket.on('server_response', function(res) {
-
+            console.log(res)
         });
 
-    })
-    mycharts.getZr().on('click', function(clickparams) {
-        let isinside = $('#main').children()[0].style.cursor;
-        if (area !== '' && isinside == "pointer") {
-            socket.emit('my_event', JSON.stringify({
-                "area": area
-            }));
-            window.location.href = "infor"
-            console.log(area);
-
-        }
+        mycharts.getZr().on('click', function(clickparams) {
+            let isinside = $('#main').children()[0].style.cursor;
+            if (area !== '' && isinside == "pointer") {
+                window.location.href = "infor"
+                socket.emit("name", JSON.stringify({
+                    "area": area
+                }));
+                console.log(area);
+            }
+        });
     });
 </script>
 
