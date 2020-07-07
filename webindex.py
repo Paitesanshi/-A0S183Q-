@@ -14,7 +14,7 @@ app.config.from_object(config)
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 name = str
-data_raw = []
+global data_raw
 
 
 @app.route('/china')
@@ -45,9 +45,10 @@ def test_getarea(data):
 def test_getdate(data):
     area = json.loads(data)
     print(area['date'])
-    temp = {22, 33, 55, 44, 66, 77, 99}
-    data_raw = pd.read_csv(area['area'] + "_min.csv")
-    pos = data_raw[data_raw.date == area['date']].index
+    print(data_raw)
+    temp = [22, 33, 55, 44, 66, 77, 99]
+    pos = data_raw[data_raw['date'] == area['date']].index
+    print(pos)
     temp = data_raw[pos:pos + 7]
     print(temp)
     emit('server_response', json.dumps(temp))

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Carbon - Admin Template</title>
-    <link rel="stylesheet" href="../static/vendor/simple-line-icons/css/simple-line-icons.css">
-    <link rel="stylesheet" href="../static/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../static/css/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="../static/css/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="../static/css/status-style.css">
     <style>
@@ -35,41 +35,46 @@
             height: 37px;
         }
     </style>
+    <script src=" ../static/js/jquery.min.js "></script>
+
+    <script type="text/javascript" src="../static/js/socket.io.dev.js"></script>
     <script>
+        var socket;
         $(document).ready(function() {
             namespace = '/test';
-            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+            socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
             console.log(socket)
 
 
-            function changedate() {
-                var str = $("input").val(); //命名一个变量保存获取的input里面的时间
-                // 创建日期对象
-                console.log(str);
-                var date = new Date(str);
-                socket.emit("date", JSON.stringify({
-                    "date": str
-                }));
-                var temp = []
-                socket.on('server_response', function(res) {
-                    console.log(res)
-                    temp = res
-                });
-
-                for (var i = 0; i < 7; ++i) {
-
-                    //// 加一天
-                    date.setDate(date.getDate() + i + 1);
-                    str = date.getFullYear() + '-'
-                        // 因为js里month从0开始，所以要加1
-                        +
-                        (parseInt(date.getMonth()) + 1) + '-' +
-                        date.getDate();
-                    document.getElementById("showtable").rows[i].cells[0].innerText = str;
-                    document.getElementById("showtable").rows[i].cells[1].innerText = temp[i]
-                }
-            }
         });
+
+        function changedate() {
+            var str = $("input").val(); //命名一个变量保存获取的input里面的时间
+            // 创建日期对象
+            console.log(str);
+            var date = new Date(str);
+            socket.emit("date", JSON.stringify({
+                "date": str
+            }));
+            var temp = []
+            socket.on('server_response', function(res) {
+                console.log(res)
+                temp = res
+            });
+
+            for (var i = 0; i < 7; ++i) {
+
+                //// 加一天
+                date.setDate(date.getDate() + i + 1);
+                str = date.getFullYear() + '-'
+                    // 因为js里month从0开始，所以要加1
+                    +
+                    (parseInt(date.getMonth()) + 1) + '-' +
+                    date.getDate();
+                document.getElementById("showtable").rows[i].cells[0].innerText = str;
+                document.getElementById("showtable").rows[i].cells[2].innerText = temp[i]
+            }
+        }
     </script>
 </head>
 
@@ -141,10 +146,7 @@
             left: 50px;" />
         </div>
     </div>
-    <script src=" ../static/vendor/jquery/jquery.min.js "></script>
-    <script src="../static/vendor/popper.js/popper.min.js "></script>
-    <script src="../static/vendor/bootstrap/js/bootstrap.min.js "></script>
-    <script src="../static/vendor/chart.js/chart.min.js "></script>
+
 
 </body>
 
