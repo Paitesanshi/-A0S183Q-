@@ -11,15 +11,6 @@
     <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="../static/css/status-style.css">
     <style>
-        table tr td {
-            border-right: 1px solid grey;
-            border-bottom: 1px solid grey;
-        }
-        
-        table {
-            width: 100%;
-        }
-        
         .list tr th {
             text-align: center;
             background: #044599 no-repeat;
@@ -44,6 +35,25 @@
             height: 37px;
         }
     </style>
+    <script>
+        function changedate() {
+            console.log("aaa");
+            for (var i = 0; i < 7; ++i) {
+                var str = $("input").val(); //命名一个变量保存获取的input里面的时间
+                // 创建日期对象
+                console.log(str);
+                var date = new Date(str);
+                //// 加一天
+                date.setDate(date.getDate() + i + 1);
+                str = date.getFullYear() + '-'
+                    // 因为js里month从0开始，所以要加1
+                    +
+                    (parseInt(date.getMonth()) + 1) + '-' +
+                    date.getDate();
+                document.getElementById("showtable").rows[i].cells[0].innerText = str;
+            }
+        }
+    </script>
 </head>
 
 <body class="sidebar-fixed header-fixed">
@@ -51,11 +61,22 @@
         <nav class="navbar page-header">
             <img src="../static/img/logo.jpg" alt="" id="logo">
             <div class="title">BJTU</div>
-            <div class="logdiv"><a href="login" id="logout">Logout</a></div>
+            <div class="logdiv"><a href="regis" id="logout">Logout</a></div>
         </nav>
         <div class="main-container">
             <img src="../static/img/result.png" id="result">
-            <table class="showtable">
+            <table id="showtable" style="
+            border: 1px solid black;
+    position: absolute;
+    width: 300px;
+    top: 100px;
+    margin: 10px;
+    font-family: verdana, arial, sans-serif;
+    font-size: 11px;
+    color: #333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;">
                 <tr>
                     <th>日期</th>
                     <th>最高温度</th>
@@ -91,18 +112,23 @@
                     <td>22</td>
                     <td>5</td>
                 </tr>
-                <tr>
-                    <td>2020-08-07</td>
-                    <td>22</td>
-                    <td>5</td>
-                </tr>
+
             </table>
+
+            <input id="datee" type="date" onchange="changedate()" style="  
+            position: absolute;
+            height: 30px;
+            width:170px;
+            position: absolute;
+            top: 75px;
+            left: 50px;" />
         </div>
     </div>
     <script src=" ../static/vendor/jquery/jquery.min.js "></script>
     <script src="../static/vendor/popper.js/popper.min.js "></script>
     <script src="../static/vendor/bootstrap/js/bootstrap.min.js "></script>
     <script src="../static/vendor/chart.js/chart.min.js "></script>
+
 </body>
 
 </html>

@@ -2,11 +2,18 @@ from flask import Flask
 from flask import render_template, redirect, url_for, request, session
 import config
 from flask_sqlalchemy import SQLAlchemy
-import pymysql
+from flask_socketio import SocketIO, emit
+import flask
+from flask_socketio import SocketIO
+import json
+import psutil
 
 app = Flask(__name__)
 app.config.from_object(config)
 db=SQLAlchemy(app)
+socketio = SocketIO(app)
+
+
 
 @app.route('/china')
 def china():
@@ -20,6 +27,26 @@ def index():
 def infor():
     return render_template('check.html')
 
+@socketio.on('name', namespace='/test')
+def test_getarea(data):
+    print("aaa")
+    #area = json.loads(data)
+    print(data)
+    emit('server_response', "123")
+
+
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    print("connected")
+    emit('server_response', "123")
+
+
+@socketio.on('json', namespace='/test')
+def handle_json(json):
+    print('received json: ' + str(json))
+@socketio.on('message',namespace="/test")
+def handle_message(message):
+    print('received message:　' + message)
 
 # 登陆
 @app.route('/login',methods=['GET','POST'])
