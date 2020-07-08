@@ -49,4 +49,10 @@ hmm没找到合适的教程和解释
 可能是gcc版本问题，安网上的方法重装gcc4.8结果搞得apt都用不了，导致重装系统
 与gcc无关，使用pip3安装才能成功
 uwsgi由于前端没好所以没试
+7.8
+安装,配置Supervisor
+安装,配置nginx及端口访问，启动flask错误，重装了好了
+重启后启动nginx失败，报Failed to start A high performance web server and a reverse proxy server.
+原来是自动生成的文件里缺了几个#
+访问服务器失败，可能是前端问题
 
