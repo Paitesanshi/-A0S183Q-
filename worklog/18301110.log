@@ -58,3 +58,9 @@ AttributeError: 'method' object has no attribute 'password'
 学习HTTP Restful Services 
 下载中国各省会城市1951年到2020年7月1日的气候数据
 整理气候数据，交付组员进行数据清洗
+
+7.8
+学习了RBAC模型 并简单给组员进行讲解RBAC
+连接内部服务器失败 页面弹出Internal server error 正在查找解决方法
+尝试将socket.io.run改为app.run(debug=True)进行输出 尝试未成功
+尝试删掉venv文件夹进行解决 也是未成功
