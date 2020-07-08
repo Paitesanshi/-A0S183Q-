@@ -1,20 +1,20 @@
 from flask import Flask
 import pandas as pd
+import numpy as np
 from flask import render_template, redirect, url_for, request, session
 import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
-from flask_socketio import SocketIO
 import json
 import psutil
 import pinyin.cedict
 
 app = Flask(__name__)
 app.config.from_object(config)
+app.config['SECRET_KEY'] = 'XX77XXX'
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
-name = str
-global data_raw
+name = ''
 
 
 @app.route('/china')
@@ -24,7 +24,7 @@ def china():
 
 @app.route('/')
 def index():
-    return redirect(url_for('china'))
+    return redirect(url_for('login'))
 
 
 @app.route('/infor')
@@ -34,30 +34,30 @@ def infor():
 
 @socketio.on('name', namespace='/test')
 def test_getarea(data):
+    global name
     area = json.loads(data)
     print(area['area'])
-    emit('server_response', "456")
-    data_raw = pd.read_csv(area['area'] + "_min.csv")
-    print(data_raw)
-
+    name=area['area']
 
 @socketio.on('date', namespace='/test')
 def test_getdate(data):
     area = json.loads(data)
-    print(area['date'])
-    print(data_raw)
-    temp = [22, 33, 55, 44, 66, 77, 99]
-    pos = data_raw[data_raw['date'] == area['date']].index
-    print(pos)
-    temp = data_raw[pos:pos + 7]
-    print(temp)
-    emit('server_response', json.dumps(temp))
+    data_raw = pd.read_csv(name+"_max.csv")
+    pos = data_raw[data_raw['date'] == area['date']].index.to_list()
+    temp_max= data_raw['tmax'][pos[0]:pos[0] + 7]
+    temp_max=temp_max.to_list()
+    emit('server_response_max', json.dumps(temp_max))
+    data_raw = pd.read_csv(name + "_min.csv")
+    pos = data_raw[data_raw['date'] == area['date']].index.to_list()
+    temp_min= data_raw['tmin'][pos[0]:pos[0] + 7]
+    temp_min=temp_min.to_list()
+    emit('server_response_min', json.dumps(temp_min))
+    #emit('server_response', pd.Series(temp).to_json(orient='values'))
 
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
     print("connected")
-    emit('server_response', "123")
 
 
 #

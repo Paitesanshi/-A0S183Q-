@@ -36,46 +36,9 @@
         }
     </style>
     <script src=" ../static/js/jquery.min.js "></script>
-
+    <script src="../static/js/echarts.min.js"></script>
     <script type="text/javascript" src="../static/js/socket.io.dev.js"></script>
-    <script>
-        var socket;
-        $(document).ready(function() {
-            namespace = '/test';
-            socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-            console.log(socket)
 
-
-        });
-
-        function changedate() {
-            var str = $("input").val(); //命名一个变量保存获取的input里面的时间
-            // 创建日期对象
-            console.log(str);
-            var date = new Date(str);
-            socket.emit("date", JSON.stringify({
-                "date": str
-            }));
-            var temp = []
-            socket.on('server_response', function(res) {
-                console.log(res)
-                temp = res
-            });
-
-            for (var i = 0; i < 7; ++i) {
-
-                //// 加一天
-                date.setDate(date.getDate() + i + 1);
-                str = date.getFullYear() + '-'
-                    // 因为js里month从0开始，所以要加1
-                    +
-                    (parseInt(date.getMonth()) + 1) + '-' +
-                    date.getDate();
-                document.getElementById("showtable").rows[i].cells[0].innerText = str;
-                document.getElementById("showtable").rows[i].cells[2].innerText = temp[i]
-            }
-        }
-    </script>
 </head>
 
 <body class="sidebar-fixed header-fixed">
@@ -86,7 +49,7 @@
             <div class="logdiv"><a href="regis" id="logout">Logout</a></div>
         </nav>
         <div class="main-container">
-            <img src="../static/img/result.png" id="result">
+            <div id="result"></div>
             <table id="showtable" style="
             border: 1px solid black;
     position: absolute;
@@ -105,36 +68,40 @@
                     <th>最低温度</th>
                 </tr>
                 <tr>
-                    <td>2020-08-01</td>
-                    <td>22</td>
-                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2020-08-02</td>
-                    <td>22</td>
-                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2020-08-03</td>
-                    <td>22</td>
-                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2020-08-04</td>
-                    <td>22</td>
-                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2020-08-05</td>
-                    <td>2</td>
-                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2020-08-06</td>
-                    <td>22</td>
-                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
-
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </table>
 
             <input id="datee" type="date" onchange="changedate()" style="  
@@ -149,5 +116,109 @@
 
 
 </body>
+<script>
+    var socket;
+    var temp_min
+    var temp_max
+    var str
+    var dates = []
+    $(document).ready(function() {
+        namespace = '/test';
+        socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        console.log(socket)
+        socket.on('server_response_max', function(res) {
+            temp_max= JSON.parse(res);
+        })
+        socket.on('server_response_min', function(res) {
+            console.log(res)
+            temp_min = JSON.parse(res);
+            // temp = res
+            console.log(temp_min)
+            var date = new Date(str);
+            for (var i = 1; i < 8; ++i) {
+
+                //// 加一天
+                if(i!=1)
+                    date.setDate(date.getDate() + 1);
+               
+                str = date.getFullYear() + '-'
+                    // 因为js里month从0开始，所以要加1
+                    +
+                    (parseInt(date.getMonth()) + 1) + '-' +
+                    date.getDate();
+                dates.push(str)
+                document.getElementById("showtable").rows[i].cells[0].innerText = str;
+                document.getElementById("showtable").rows[i].cells[1].innerText = temp_max[i - 1]
+                document.getElementById("showtable").rows[i].cells[2].innerText = temp_min[i - 1]
+            }
+            console.log(dates)
+            var option = {
+
+                title: { //图表标题，可以通过show:true/false控制显示与否，subtext:'二级标题',
+                    text: '未来七天天气预测折线图'
+                },
+                backgroundColor: '#FFFFFF',
+
+                tooltip: { //鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置
+                    trigger: 'axis'
+                },
+                legend: { // 图例，每条折线或者项对应的示例
+                    data: ['最低气温', '最高气温']
+                },
+                calculable: true,
+                xAxis: [{
+                    axisLine: {
+                        lineStyle: {
+                            color: '#CCCCCC'
+                        }
+                    },
+                    type: 'category',
+                    boundaryGap: false, //从0刻度开始
+                    // data:[]  X轴的定义
+                    data:dates
+                }],
+                yAxis: [{
+
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#CCCCCC'
+                        }
+                    }
+                }],
+                series: [{
+                    name: '最低气温',
+                    type: 'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2, //弧度
+                    color: ['#66AEDE'],
+                    // data:Y轴数据
+                    data: temp_min
+                }, {
+                    name: '最高气温',
+                    type: 'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2, //弧度
+                    color: ['#66BCDE'],
+                    // data:Y轴数据
+                    data:temp_max
+                }, ]
+            };
+            var myChart = echarts.init(document.getElementById('result'));
+            myChart.setOption(option);
+        });
+
+    });
+
+    function changedate() {
+        str = $("input").val(); //命名一个变量保存获取的input里面的时间
+        // 创建日期对象
+        console.log(str);
+        var date = new Date(str);
+        socket.emit("date", JSON.stringify({
+            "date": str
+        }));
+    }
+</script>
 
 </html>
