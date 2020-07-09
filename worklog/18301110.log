@@ -64,3 +64,8 @@ AttributeError: 'method' object has no attribute 'password'
 连接内部服务器失败 页面弹出Internal server error 正在查找解决方法
 尝试将socket.io.run改为app.run(debug=True)进行输出 尝试未成功
 尝试删掉venv文件夹进行解决 也是未成功
+
+7.9
+帮助其他组长调整flask
+帮助后端构筑模型的组员寻找合适模型
+完善展示页面
