@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>login</title>
+    <meta charset="utf-8">
+    <title>登录(Login)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <style>
         * {
             margin: 0;
             padding: 0;
         }
-
+        
         html {
             height: 100%;
             width: 100%;
@@ -21,14 +24,14 @@
             background-size: 100% 100%;
             -moz-background-size: 100% 100%;
         }
-
+        
         body {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100%;
         }
-
+        
         #loginDiv {
             width: 37%;
             display: flex;
@@ -39,18 +42,18 @@
             box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
             border-radius: 5px;
         }
-
+        
         #name_trip {
             margin-left: 50px;
             color: red;
         }
-
+        
         p {
             margin-top: 30px;
             margin-left: 20px;
             color: azure;
         }
-
+        
         input {
             margin-left: 15px;
             border-radius: 5px;
@@ -62,7 +65,7 @@
             color: #f0edf3;
             padding-left: 10px;
         }
-
+        
         .button {
             border-color: cornsilk;
             background-color: rgba(100, 149, 237, .7);
@@ -73,112 +76,108 @@
             height: 31px;
             font-size: 16px;
         }
-
     </style>
-</head>
+    <!-- Javascript -->
+    <script src="../static/js/jquery-1.8.2.min.js"></script>
+    <script src="../static/js/scripts.js"></script>
+    <script type="text/javascript" src="../static/js/socket.io.dev.js"></script>
+    <script type="text/javascript">
+        var code; //在全局定义验证码
+        var socket
 
-        <meta charset="utf-8">
-        <title>登录(Login)</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <!-- CSS -->
-<!--        <link rel="stylesheet" href="assets/css/reset.css">-->
-<!--        <link rel="stylesheet" href="assets/css/supersized.css">-->
-<!--        <link rel="stylesheet" href="assets/css/style.css">-->
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script src="assets/js/html5.js"></script>
-        <![endif]-->
-		 <script type='text/javascript'>
-        var code ; //在全局定义验证码
-
-        function createCode(){
-             code = "";
-             var codeLength = 4;//验证码的长度
-             var checkCode = document.getElementById("code");
-             var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
-             'S','T','U','V','W','X','Y','Z');//随机数
-             for(var i = 0; i < codeLength; i++) {//循环操作
-                var index = Math.floor(Math.random()*36);//取得随机数的索引（0~35）
-                code += random[index];//根据索引取得随机数加到code上
+        function createCode() {
+            code = "";
+            var codeLength = 4; //验证码的长度
+            var checkCode = document.getElementById("code");
+            var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ' A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //随机数
+            for (var i = 0; i < codeLength; i++) { //循环操作
+                var index = Math.floor(Math.random() * 36); //取得随机数的索引（0~35）
+                code += random[index]; //根据索引取得随机数加到code上
             }
-            checkCode.value = code;//把code值赋给验证码
+            checkCode.value = code; //把code值赋给验证码
         }
         //校验验证码
-        function validate(){
+        function validate() {
 
-			var password=document.getElementById("password").value;
-			var username=document.getElementById("username").value;
-			if(username!="pengxiang"){
-				alert("用户名不正确！");
-				return false;
-			}
-			if(username!="123456"){
-				alert("密码不正确！");
-				return false;
-			}
+            var password = document.getElementById("password").value;
+            var username = document.getElementById("username").value;
 
             var inputCode = document.getElementById("Captcha").value.toUpperCase(); //取得输入的验证码并转化为大写
-            if(inputCode.length <= 0) { //若输入的验证码长度为0
+            console.log(inputCode, code)
+            if (inputCode.length <= 0) { //若输入的验证码长度为0
                 alert("请输入验证码！"); //则弹出请输入验证码
                 return false;
-            }else if(inputCode != code ) { //若输入的验证码与产生的验证码不一致时
+            } else if (inputCode != code) { //若输入的验证码与产生的验证码不一致时
                 alert("验证码输入错误！"); //则弹出验证码输入错误
-                createCode();//刷新验证码
-                document.getElementById("Captcha").value = "";//清空文本框
+                createCode(); //刷新验证码
+                document.getElementById("Captcha").value = ""; //清空文本框
                 return false;
-            }else { //输入正确时
-                alert("登录成功,正在跳转...");
+            } else { //输入正确时
+                var password = document.getElementById("password").value;
+                var username = document.getElementById("username").value;
+                console.log(password, username)
+                socket.emit('mylogin', JSON.stringify({
+                    'username': username,
+                    'password': password,
+                    'kind': "user"
+                }));
 
             }
             return true;
         }
-        function agree(){
-            if(document.getElementById('cb').checked){
-            	alert("您已同意服务条款！");return true; }
 
-         else
-        	 alert("您尚未同意服务条款！");
-			return false;
-       }
-        </script>
+        function agree() {
+            if (document.getElementById('cb ').checked) {
+                alert("您已同意服务条款！");
+                return true;
+            } else
+                alert("您尚未同意服务条款！");
+            return false;
+        }
 
-    </head>
+        $(document).ready(function() {
+            namespace = '/test';
+            socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
+            console.log(socket)
+            socket.on('login_response', function(res) {
+                if (JSON.parse(res) == 'ok') {
+                    window.location.href = 'china'
+                } else
+                    alert("用户名或密码错误！")
+            });
+        });
+    </script>
+</head>
 
-    <body onload='createCode()'>
+<body onload="createCode()">
 
-        <div class="loginDiv" style="width: 30%;
-
+    <div class="loginDiv" style="
+            width: 30%;
             justify-content: center;
             align-items: center;
             height: 300px;
             background-color: rgba(75, 81, 95, 0.3);
             box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
             border-radius: 5px;">
-            <h1 style="text-align: center;color: aliceblue;">登录(Login)</h1>
-            <form action="/china" method="GET" style="">
-                <p>用户名<input type="text" name="username" class="username" ></p>
-                <p>密&nbsp &nbsp码<input type="password" name="password" class="password" >
-                <p>验证码<input type="Captcha" class="Captcha" name="Captcha" >
-                <input type="button" id="code" onclick="createCode()" style="height:40px;width:120px;color:black;font-size:20px;" title='点击更换验证码' /></p>
-                <p><button type="submit" class="button" style="display:block;margin:0 auto">登录</button>
-                <p>
-                没有账号？<a href="regis">请注册</a>
-                </p>
-                <div class="error"><span>+</span></div>
-            </form>
+        <h1 style="text-align: center;color: aliceblue;">登录(Login)</h1>
+        <!-- <form id="userform"> -->
+        <p>用户名<input type="text" name="username" id="username">
+        </p>
+        <p>密&nbsp &nbsp码<input type="password" name="password" id="password">
+        </p>
+        <p>验证码<input type="Captcha" class="Captcha" id="Captcha">
+            <input type="button" id="code" onclick="createCode()" style="height:40px;width:120px;color:black;font-size:20px;" title="点击更换验证码" />
+        </p>
+        <p><button type="submit" class="button" style="display:block;margin:0 auto" onclick="validate()">登录</button>
+        </p>
+        <p>
+            没有账号？<a href="regis">请注册</a>
+        </p>
+        <div class="error"><span>+</span></div>
+        <!-- </form> -->
 
-        </div>
-
-        <!-- Javascript -->
-        <script src="assets/js/jquery-1.8.2.min.js" ></script>
-        <script src="assets/js/supersized.3.2.7.min.js" ></script>
-        <script src="assets/js/supersized-init.js" ></script>
-        <script src="assets/js/scripts.js" ></script>
-
-    </body>
+    </div>
+</body>
 
 </html>

@@ -6,17 +6,30 @@ import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
 import json
+from datetime import timedelta
+import pymysql
 import psutil
 import pinyin.cedict
 
 app = Flask(__name__)
 app.config.from_object(config)
 app.config['SECRET_KEY'] = 'XX77XXX'
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 name = ''
 
+# 开始创建用户模型，即在数据库中创建表格：
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(20), nullable=False)
+    kind = db.Column(db.String(20), nullable=False)
 
+
+# 创建表格
+db.create_all()
 @app.route('/china')
 def china():
     return render_template('china.html')
@@ -36,23 +49,56 @@ def infor():
 def test_getarea(data):
     global name
     area = json.loads(data)
-    print(area['area'])
-    name=area['area']
+    name = area['area']
+
+
+@socketio.on('register', namespace='/test')
+def test_register(data):
+    data = json.loads(data)
+    username = data['username']  # 与html页面名字相同
+    password = data['password']
+    kind=data['kind']
+    user = User.query.filter(User.username == username).first()
+    if user:
+        emit('register_response', json.dumps("exist"))
+    else:
+        user = User(username=username, password=password,kind=kind)
+        db.session.add(user)
+        db.session.commit()
+        emit('register_response', json.dumps("ok"))
+
+
+@socketio.on('mylogin', namespace='/test')
+def test_login(data):
+    data = json.loads(data)
+    username = data['username']  # 与html页面名字相同
+    password = data['password']
+    kind=data['kind']
+    user = User.query.filter(User.username == username, User.password == password,User.kind==kind).first()
+    if user:
+        session['username'] = username
+        session.permanent = True
+        # # return redirect(url_for('china'))
+        # return render_template('china.html')
+        emit('login_response', json.dumps("ok"))
+    else:
+        emit('login_response', json.dumps("not exist"))
+
 
 @socketio.on('date', namespace='/test')
 def test_getdate(data):
     area = json.loads(data)
-    data_raw = pd.read_csv(name+"_max.csv")
+    data_raw = pd.read_csv(name + "_max.csv")
     pos = data_raw[data_raw['date'] == area['date']].index.to_list()
-    temp_max= data_raw['tmax'][pos[0]:pos[0] + 7]
-    temp_max=temp_max.to_list()
+    temp_max = data_raw['tmax'][pos[0]:pos[0] + 7]
+    temp_max = temp_max.to_list()
     emit('server_response_max', json.dumps(temp_max))
     data_raw = pd.read_csv(name + "_min.csv")
     pos = data_raw[data_raw['date'] == area['date']].index.to_list()
-    temp_min= data_raw['tmin'][pos[0]:pos[0] + 7]
-    temp_min=temp_min.to_list()
+    temp_min = data_raw['tmin'][pos[0]:pos[0] + 7]
+    temp_min = temp_min.to_list()
     emit('server_response_min', json.dumps(temp_min))
-    #emit('server_response', pd.Series(temp).to_json(orient='values'))
+    # emit('server_response', pd.Series(temp).to_json(orient='values'))
 
 
 @socketio.on('connect', namespace='/test')
@@ -69,73 +115,38 @@ def test_connect():
 #     print('received message:　' + message)
 
 # 登陆
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login')
 def login():
-    if request.method == 'GET':
-        return render_template('base.html')
-    else:
-        username = request.form.get('id')  # 与html页面名字相同
-        password = request.form.get('password')
-        print(username, password)
-        user = User.query.filter(User.username == username, User.password == password).first()
-        print(user)
-        if user:
-            session['username'] = username
-            session.permanent = True
-            return redirect(url_for('china'))
-        else:
-            return '用户不存在'
+    return render_template('base.html')
 
 
 # 注册
-@app.route('/regis', methods=['GET', 'POST'])
+@app.route('/regis')
 def register():
-    if request.method == 'GET':
-
-        return render_template('zhuce1.html')
-    else:
-
-        username = request.form.get('zcid')  # 与html页面名字相同
-        password = request.form.get('zcpassword')
-        user = User.query.filter(User.username == username).first()
-        if user:
-            return 'exit'
-        else:
-            user = User(username=username, password=password)
-            db.session.add(user)
-            db.session.commit()
-            return redirect(url_for('login'))
+    return render_template('zhuce1.html')
 
 
-# 开始创建用户模型，即在数据库中创建表格：
-class User(db.Model):
-    __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(20), nullable=False)
-    password = db.Column(db.String(20), nullable=False)
 
 
-# 创建表格
-db.create_all()
 
 # 数据查询方法
-User.query.filter(User.username == 'mis1114').first()
-
-
-# #数据添加方法
-# user = User(username='wl097tql',password='g6666')
+# User.query.filter(User.username == 'mis1114').first()
+#
+# # 数据添加方法
+# user = User(username='wl097tql', password='g6666')
 # db.session.add(user)
 # db.session.commit()
 #
 # # 数据的修改方法
-# user = User.query.filter(User.username=='wl097tql').first
-# user.password='250250'
+# user = User.query.filter(User.username == 'wl097tql').first
+#
 # db.session.commit()
 #
 # # 数据的删除方法
-# user = User.query.filter(User.username=='wl097tql').first()
+# user = User.query.filter(User.username == 'wl097tql').first()
 # db.session.delete(user)
 # db.session.commit()
+
 
 @app.context_processor
 def mycontext():
@@ -148,5 +159,4 @@ def mycontext():
 
 if __name__ == '__main__':
     # web服务器入口
-    #app.run(debug=True)
-    socketio.run(app, debug=True)
+    socketio.run(app,debug=True)

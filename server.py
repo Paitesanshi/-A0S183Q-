@@ -28,7 +28,7 @@ def background_thread():
 
 @app.route('/')
 def index():
-    return render_template('testclient.html', async_mode=socketio.async_mode)
+    return render_template('china.html', async_mode=socketio.async_mode)
 
 
 class MyNamespace(Namespace):

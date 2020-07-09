@@ -1,4 +1,4 @@
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:zxc110@127.0.0.1:3306/test_db?charset=utf8'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:zxc110@localhost:3306/test_db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 import os
