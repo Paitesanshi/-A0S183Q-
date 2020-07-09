@@ -87,5 +87,5 @@ plt.plot(forecast['ds'], forecast['yhat'])
 print("mse is",mean_squared_error(test['y'].values,forecast['yhat'].values[trainsize:dfmax.shape[0]]))
 
 result['date']=forecast['ds']
-result['tmin']=forecast['yhat']
+result['tmax']=forecast['yhat']
 result.to_csv("result_max.csv",index=None)
