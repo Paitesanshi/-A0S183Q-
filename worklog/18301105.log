@@ -64,3 +64,4 @@ uwsgi由于前端没好所以没试
 内部服务器错误原因找到了，主要处在了conda的依赖管理上，屏蔽panda和numpy后可以访问，界面全出来了跳转也正常。
 但是加回去之后numpy除了14和16版之外都找不到core，14和16mkl又有问题
 试了stack overflow里的各路办法，看了numpy和intel mkl的官网，以及panda的issue，都未能解决，libatlas-base-dev也安了，无效，pip,pip3,atp,conda安装全是一样的问题
+python shell 里inport numpy正常，目前3.7换3.6也无效 
