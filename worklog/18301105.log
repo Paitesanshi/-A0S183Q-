@@ -61,4 +61,6 @@ uwsgi由于前端没好所以没试
 改uwsgi和nginx的配置文件，包括端口，路径，启动文件和函数，以及py文件，很乱有点对不上，总之还是不行
 7.10
 写了个测试用的flask项目，整个环境重新检查、部署，对着日志改，成功访问
-内部服务器错误原因找到了，主要处在了conda的依赖管理上，屏蔽panda和numpy后可以访问，但是numpy除了14和16版之外都找不到core，14和16mkl又有问题
+内部服务器错误原因找到了，主要处在了conda的依赖管理上，屏蔽panda和numpy后可以访问，界面全出来了跳转也正常。
+但是加回去之后numpy除了14和16版之外都找不到core，14和16mkl又有问题
+试了stack overflow里的各路办法，看了numpy和intel mkl的官网，以及panda的issue，都未能解决，libatlas-base-dev也安了，无效，pip,pip3,atp,conda安装全是一样的问题
