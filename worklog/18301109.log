@@ -88,4 +88,11 @@ java spring MVC的登录界面可以显示，但登录之后的界面一片空�
 继续实现spring MVC 调用 flack 微服务接口
 7.9
 找了一天的bug，心累
+7.10
+上午
+尝试实现Java spring mvc与flack通过web socket连接
+web socket连接不上，难受
+下午
+继续实现Java spring mvc与flack通过web socket连接
+经过多次尝试，修改，Java spring mvc前端成功与flack后端通过web socket连接，心情激动
 
