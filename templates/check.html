@@ -127,20 +127,16 @@
         socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
         console.log(socket)
         socket.on('server_response_max', function(res) {
-            temp_max= JSON.parse(res);
+            temp_max = JSON.parse(res);
         })
         socket.on('server_response_min', function(res) {
             console.log(res)
             temp_min = JSON.parse(res);
             // temp = res
-            console.log(temp_min)
             var date = new Date(str);
             for (var i = 1; i < 8; ++i) {
-
-                //// 加一天
-                if(i!=1)
+                if (i != 1)
                     date.setDate(date.getDate() + 1);
-               
                 str = date.getFullYear() + '-'
                     // 因为js里month从0开始，所以要加1
                     +
@@ -153,7 +149,6 @@
             }
             console.log(dates)
             var option = {
-
                 title: { //图表标题，可以通过show:true/false控制显示与否，subtext:'二级标题',
                     text: '未来七天天气预测折线图'
                 },
@@ -175,7 +170,7 @@
                     type: 'category',
                     boundaryGap: false, //从0刻度开始
                     // data:[]  X轴的定义
-                    data:dates
+                    data: dates
                 }],
                 yAxis: [{
 
@@ -201,7 +196,7 @@
                     smooth: 0.2, //弧度
                     color: ['#66BCDE'],
                     // data:Y轴数据
-                    data:temp_max
+                    data: temp_max
                 }, ]
             };
             var myChart = echarts.init(document.getElementById('result'));

@@ -1,6 +1,5 @@
 from flask import Flask
 import pandas as pd
-import numpy as np
 from flask import render_template, redirect, url_for, request, session
 import config
 from flask_sqlalchemy import SQLAlchemy
@@ -8,7 +7,6 @@ from flask_socketio import SocketIO, emit
 import json
 from datetime import timedelta
 import pymysql
-import psutil
 import pinyin.cedict
 
 app = Flask(__name__)
@@ -26,7 +24,21 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(20), nullable=False)
     kind = db.Column(db.String(20), nullable=False)
-
+    def to_json(model):
+        """ Returns a JSON representation of an SQLAlchemy-backed object. """
+        json = {}
+        # json['fields'] = {}
+        # json['pk'] = getattr(model, 'id')
+        for col in model._sa_class_manager.mapper.mapped_table.columns:
+            # json['fields'][col.name] = getattr(model, col.name)
+            json[col.name] = getattr(model, col.name)
+        # return dumps([json])
+        return json
+    def to_json_list(model_list,self):
+        json_list = []
+        for model in model_list:
+            json_list.append(self.to_json(model))
+        return json_list
 
 # 创建表格
 db.create_all()
@@ -44,13 +56,26 @@ def index():
 def infor():
     return render_template('check.html')
 
-
 @socketio.on('name', namespace='/test')
 def test_getarea(data):
     global name
     area = json.loads(data)
     name = area['area']
 
+@socketio.on('getusers', namespace='/test')
+def test_getusers(data):
+    users=User.query.filter(User.kind == 'user').all()
+    result = User.to_json_list(users,User)
+    print(result)
+    emit('users',json.dumps(result))
+
+@socketio.on('deleteuser', namespace='/test')
+def test_deleteuser(data):
+    username=json.loads(data)
+    user=User.query.filter(User.username == username).first()
+    print(user)
+    db.session.delete(user)
+    db.session.commit()
 
 @socketio.on('register', namespace='/test')
 def test_register(data):
@@ -66,7 +91,6 @@ def test_register(data):
         db.session.add(user)
         db.session.commit()
         emit('register_response', json.dumps("ok"))
-
 
 @socketio.on('mylogin', namespace='/test')
 def test_login(data):
@@ -104,7 +128,9 @@ def test_getdate(data):
 @socketio.on('connect', namespace='/test')
 def test_connect():
     print("connected")
-
+    # users = User.query.filter(User.kind == 'user').all()
+    # print(users[0].username)
+    # print(json.dumps(users[0].username))
 
 #
 # @socketio.on('json', namespace='/test')
@@ -117,7 +143,7 @@ def test_connect():
 # 登陆
 @app.route('/login')
 def login():
-    return render_template('base.html')
+    return render_template('user.html')
 
 
 # 注册
@@ -130,7 +156,7 @@ def register():
 
 
 # 数据查询方法
-# User.query.filter(User.username == 'mis1114').first()
+
 #
 # # 数据添加方法
 # user = User(username='wl097tql', password='g6666')
@@ -156,7 +182,7 @@ def mycontext():
     else:
         return {}
 
-
+#
 if __name__ == '__main__':
     # web服务器入口
     socketio.run(app,debug=True)
