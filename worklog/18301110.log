@@ -66,11 +66,15 @@ AttributeError: 'method' object has no attribute 'password'
 尝试删掉venv文件夹进行解决 也是未成功
 
 7.9
-帮助其他组长调整flask
+帮助组长调整flask
 帮助后端构筑模型的组员寻找合适模型
 完善展示页面
 
 7.10
 撰写文档框架
 研究java和flask怎么样进行网络连接
+制作ppt
+
+7.11
+继续编写文档
 制作ppt
