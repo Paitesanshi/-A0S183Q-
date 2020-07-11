@@ -65,3 +65,8 @@ uwsgi由于前端没好所以没试
 但是加回去之后numpy除了14和16版之外都找不到core，14和16mkl又有问题
 试了stack overflow里的各路办法，看了numpy和intel mkl的官网，以及panda的issue，都未能解决，libatlas-base-dev也安了，无效，pip,pip3,atp,conda安装全是一样的问题
 python shell 里inport numpy正常，目前3.7换3.6也无效 
+7.11
+重置系统，改安virtualenv，virtualenv一度报错，virtualenvwrapper无法安装，下午换16.04，结果中途pip又失效，到3点没解决，重置为18.04
+virtualenvwrapper依旧无法安装，更新pip没有用，换成清华的源解决（感觉阿里好多源都有问题或者无法下载，感觉anaconda安numpy可能也是这原因，可惜已经重置了）
+换了virtualenvwrapper的虚拟环境，用requirements.txt安装依赖，处理了报错，成功部署了后端，且nginx和Gunicorn全部正常
+安jdk和tomcat，部署前端
