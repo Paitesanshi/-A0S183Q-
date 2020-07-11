@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Carbon - Admin Template</title>
+    <title>查询天气</title>
     <link rel="stylesheet" href="../static/css/vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="../static/css/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="../static/css/status-style.css">
+    <link rel="stylesheet" href="../static/css/table-style.css">
     <style>
         .list tr th {
             text-align: center;
@@ -41,80 +42,71 @@
 
 </head>
 
-<body class="sidebar-fixed header-fixed">
-    <div class="page-wrapper">
-        <nav class="navbar page-header">
+<body class="sidebar-fixed">
+    <div class="page-wrapper" style="top:10px;">
+        <nav class="navbar" style="background-color: #fff;width: 100%;">
             <img src="../static/img/logo.jpg" alt="" id="logo">
             <div class="title">BJTU</div>
-            <div class="logdiv"><a href="regis" id="logout">Logout</a></div>
+            <div class="logdiv"><a href="login" id="logout">Logout</a></div>
         </nav>
-        <div class="main-container">
-            <div id="result"></div>
-            <table id="showtable" style="
-            border: 1px solid black;
-    position: absolute;
-    width: 300px;
-    top: 100px;
-    margin: 10px;
-    font-family: verdana, arial, sans-serif;
-    font-size: 11px;
-    color: #333333;
-    border-width: 1px;
-    border-color: #666666;
-    border-collapse: collapse;">
-                <tr>
-                    <th>日期</th>
-                    <th>最高温度</th>
-                    <th>最低温度</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
+        <div class="container">
+            <div style="text-align:center; vertical-align:middel;background-color: #555;">
+                <input id="datee" type="date" onchange=" changedate() " style=" height: 30px; width:170px; top: 75px; left: 50px;margin: 10px;" />
+            </div>
+            <div style="border-radius: 25px;">
+                <table id="showtable" class="zebra">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>最高温度</th>
+                            <th>最低温度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>11</td>
+                            <td>11</td>
+                            <td>11</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <input id="datee" type="date" onchange="changedate()" style="  
-            position: absolute;
-            height: 30px;
-            width:170px;
-            position: absolute;
-            top: 75px;
-            left: 50px;" />
+
         </div>
+        <div id="result"></div>
+        <div id="result2"></div>
     </div>
-
-
 </body>
 <script>
     var socket;
@@ -150,7 +142,7 @@
             console.log(dates)
             var option = {
                 title: { //图表标题，可以通过show:true/false控制显示与否，subtext:'二级标题',
-                    text: '未来七天天气预测折线图'
+                    text: '未来七天最高气温预测折线图'
                 },
                 backgroundColor: '#FFFFFF',
 
@@ -173,7 +165,53 @@
                     data: dates
                 }],
                 yAxis: [{
+                    scale: true,
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#CCCCCC'
+                        }
+                    }
+                }],
+                series: [{
+                    name: '最高气温',
+                    type: 'line',
+                    // symbol:'none',//原点
+                    smooth: 0.2, //弧度
+                    color: ['#66BCDE'],
+                    // data:Y轴数据
+                    data: temp_max
+                }]
+            };
 
+            var myChart = echarts.init(document.getElementById('result'));
+            myChart.setOption(option);
+            var option2 = {
+                title: { //图表标题，可以通过show:true/false控制显示与否，subtext:'二级标题',
+                    text: '未来七天最低气温预测折线图'
+                },
+                backgroundColor: '#FFFFFF',
+
+                tooltip: { //鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置
+                    trigger: 'axis'
+                },
+                legend: { // 图例，每条折线或者项对应的示例
+                    data: ['最低气温']
+                },
+                calculable: true,
+                xAxis: [{
+                    axisLine: {
+                        lineStyle: {
+                            color: '#CCCCCC'
+                        }
+                    },
+                    type: 'category',
+                    boundaryGap: false, //从0刻度开始
+                    // data:[]  X轴的定义
+                    data: dates
+                }],
+                yAxis: [{
+                    scale: true,
                     type: 'value',
                     axisLine: {
                         lineStyle: {
@@ -189,18 +227,11 @@
                     color: ['#66AEDE'],
                     // data:Y轴数据
                     data: temp_min
-                }, {
-                    name: '最高气温',
-                    type: 'line',
-                    // symbol:'none',//原点
-                    smooth: 0.2, //弧度
-                    color: ['#66BCDE'],
-                    // data:Y轴数据
-                    data: temp_max
-                }, ]
+                }]
             };
-            var myChart = echarts.init(document.getElementById('result'));
-            myChart.setOption(option);
+
+            var myChart2 = echarts.init(document.getElementById('result2'));
+            myChart2.setOption(option2);
         });
 
     });

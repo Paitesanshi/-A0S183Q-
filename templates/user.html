@@ -12,67 +12,74 @@
     <script>
         var users;
         var socket;
-        $('.delete').click(
-            function() {
-                console.log("当前URL为:", $(this));
-                var user = $(this).parent().siblings()[0].innerText;
-                socket.emit('deleteuser', JSON.stringify({
-                    'username': user
-                }));
-            }
-        );
+        var user
         $(document).ready(function() {
             namespace = '/test';
             socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-            console.log(socket)
             socket.on('connect', function(res) {
                 socket.emit('getusers', 'get');
-                console.log(res)
             });
-            console.log($('.delete'))
-                // $('a').click(
-                //     function() {
-                //         console.log("当前URL为:", $(this));
-                //         var user = $(this).parent().siblings()[0].innerText;
-                //         socket.emit('deleteuser', JSON.stringify({
-                //             'username': user
-                //         }));
-                //     }
-                // );
-            function deleteuser(this) {
-
-
-                console.log(this)
-            }
+            socket.on('getauthority', function(res) {
+                user = JSON.parse(res);
+            });
             socket.on('users', function(res) {
                 users = JSON.parse(res);
-                console.log(users)
                 $("#tb  tr:not(:first)").empty("");
-                for (var i = 0; i < users.length; ++i) {
-                    var table = document.getElementById("tb");
-                    var newRow = document.createElement("tr");
-                    var column1 = document.createElement("td");
-                    var rowIndex = table.rows.length - 1; //添加新行的序号
-                    column1.innerHTML = users[i].username;
-                    var column2 = document.createElement("td");
-                    column2.innerHTML = users[i].password;
-                    var column3 = document.createElement("td");
-                    column3.innerHTML = users[i].kind;
-                    var column4 = document.createElement("td");
-                    column4.innerHTML = "<a href='#'class ='edit'> Edit </a>";
-                    var column5 = document.createElement("td");
-                    column5.innerHTML = "<button class ='delete' onclick='deleteuser'> Delete </button>";
-                    //  var deleteBt = document.createElement("button");
-                    // deleteBt.innerHTML = "删除";
-                    //deleteBt.οnclick = deleteRow;
-                    //column4.appendChild(deleteBt);
-                    newRow.appendChild(column1);
-                    newRow.appendChild(column2);
-                    newRow.appendChild(column3);
-                    newRow.appendChild(column4);
-                    newRow.appendChild(column5);
-                    table.appendChild(newRow);
+                if (user == 'vip') {
+                    for (var i = 0; i < users.length; ++i) {
+                        var table = document.getElementById("tb");
+                        var newRow = document.createElement("tr");
+                        var column1 = document.createElement("td");
+                        var rowIndex = table.rows.length - 1; //添加新行的序号
+                        column1.innerHTML = users[i].username;
+                        var column2 = document.createElement("td");
+                        column2.innerHTML = users[i].password;
+                        var column3 = document.createElement("td");
+                        column3.innerHTML = users[i].kind;
+                        newRow.appendChild(column1);
+                        newRow.appendChild(column2);
+                        newRow.appendChild(column3);
+                        table.appendChild(newRow);
+                    }
+                } else {
+                    for (var i = 0; i < users.length; ++i) {
+                        var table = document.getElementById("tb");
+                        var newRow = document.createElement("tr");
+                        var column1 = document.createElement("td");
+                        var rowIndex = table.rows.length - 1; //添加新行的序号
+                        column1.innerHTML = users[i].username;
+                        var column2 = document.createElement("td");
+                        column2.innerHTML = users[i].password;
+                        var column3 = document.createElement("td");
+                        column3.innerHTML = users[i].kind;
+                        var column4 = document.createElement("td");
+                        column4.innerHTML = "<a href='edit' class ='edit'> Edit </a>";
+                        var column5 = document.createElement("td");
+                        column5.innerHTML = "<button class ='delete'> Delete </button>";
+                        newRow.appendChild(column1);
+                        newRow.appendChild(column2);
+                        newRow.appendChild(column3);
+                        newRow.appendChild(column4);
+                        newRow.appendChild(column5);
+                        table.appendChild(newRow);
+                    }
+                    $('.delete').click(function() {
+                        var user = $(this).parent().siblings()[0].innerText;
+                        console.log(user)
+                        socket.emit('deleteuser', JSON.stringify({
+                            "username": user
+                        }));
+                        location.reload()
+                    });
+                    $('.edit').click(function() {
+                        var user = $(this).parent().siblings()[0].innerText;
+                        console.log(user)
+                        socket.emit('editeuser', JSON.stringify({
+                            "username": user
+                        }));
+                    });
                 }
+
             });
         });
     </script>
@@ -83,7 +90,7 @@
         <nav class="page-header">
             <img src="../static/img/logo.jpg" alt="" id="logo">
             <div class="title">BJTU</div>
-            <div class="logdiv"><a href="regis" id="logout">Logout</a></div>
+            <div class="logdiv"><a href="login" id="logout">Logout</a></div>
         </nav>
         <div id="content" class="container_16 clearfix" style="top:80px">
             <div class="grid_16">
