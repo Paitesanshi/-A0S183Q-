@@ -70,3 +70,5 @@ python shell 里inport numpy正常，目前3.7换3.6也无效
 virtualenvwrapper依旧无法安装，更新pip没有用，换成清华的源解决（感觉阿里好多源都有问题或者无法下载，感觉anaconda安numpy可能也是这原因，可惜已经重置了）
 换了virtualenvwrapper的虚拟环境，用requirements.txt安装依赖，处理了报错，成功部署了后端，且nginx和Gunicorn全部正常
 安jdk和tomcat，部署前端
+出现了socketio连不上的问题，mysql的loaclhost对不上
+flask前端已经全部正常，java出现跨域访问问题
