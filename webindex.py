@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
 import json
 from datetime import timedelta
+from flask_cors import CORS, cross_origin
 import pymysql
 import pinyin.cedict
 
@@ -14,7 +15,7 @@ app.config.from_object(config)
 app.config['SECRET_KEY'] = 'XX77XXX'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 db = SQLAlchemy(app)
-socketio = SocketIO(app)
+socketio = SocketIO(app,cors_allowed_origins='*')
 name = ''
 userauthority = ''
 toedit = ''
@@ -259,3 +260,4 @@ def mycontext():
 if __name__ == '__main__':
     # web服务器入口
     socketio.run(app, debug=True)
+    CORS(app, supports_credentials=True)  # 设置参数

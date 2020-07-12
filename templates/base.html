@@ -138,6 +138,7 @@
         $(document).ready(function() {
             namespace = '/test';
             socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
+            //socket = io.connect('http: //123.56.45.139:80');
             console.log(socket)
             socket.on('login_response', function(res) {
                 if (JSON.parse(res) == 'user') {
