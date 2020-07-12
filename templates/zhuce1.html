@@ -56,7 +56,7 @@
         }
         $(document).ready(function() {
             namespace = '/test';
-            socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
+            socket = io.connect(location.protocol + '//' + document.domain + ':' + 80 + namespace);
             console.log(socket)
             socket.on('register_response', function(res) {
                 console.log(res)

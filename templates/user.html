@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Steal My Admin</title>
+    <title>用户管理</title>
     <link rel="stylesheet" href="../static/css/960.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="../static/css/template.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="../static/css/colour.css" type="text/css" media="screen" charset="utf-8" />
@@ -15,7 +15,7 @@
         var user
         $(document).ready(function() {
             namespace = '/test';
-            socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+            socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
             socket.on('connect', function(res) {
                 socket.emit('getusers', 'get');
             });
@@ -111,13 +111,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td>Philip</td>
-                            <td>Claire</td>
-                            <td>Development</td>
-                            <td><a href="#" class="edit">Edit</a></td>
-                            <td><a href="#" class="delete">Delete</a></td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-    <title>注册</title>
+    <title>修改</title>
     <meta http-equiv='content-type' content='text/html;charset=utf-8'>
     <script src="../static/js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="../static/js/socket.io.dev.js"></script>
@@ -18,7 +18,7 @@
         $(document).ready(function() {
 
             namespace = '/test';
-            socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
+            socket = io.connect(location.protocol + '//' + document.domain + ':' + 80 + namespace);
             console.log(socket)
             socket.on('connect', function(res) {
                 socket.emit('getedituser', 'get');

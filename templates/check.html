@@ -64,9 +64,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>11</td>
-                            <td>11</td>
-                            <td>11</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -116,7 +116,7 @@
     var dates = []
     $(document).ready(function() {
         namespace = '/test';
-        socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
         console.log(socket)
         socket.on('server_response_max', function(res) {
             temp_max = JSON.parse(res);
@@ -125,6 +125,7 @@
             console.log(res)
             temp_min = JSON.parse(res);
             // temp = res
+            dates.length = 0
             var date = new Date(str);
             for (var i = 1; i < 8; ++i) {
                 if (i != 1)
@@ -150,7 +151,7 @@
                     trigger: 'axis'
                 },
                 legend: { // 图例，每条折线或者项对应的示例
-                    data: ['最低气温', '最高气温']
+                    data: ['最高气温']
                 },
                 calculable: true,
                 xAxis: [{
@@ -229,7 +230,6 @@
                     data: temp_min
                 }]
             };
-
             var myChart2 = echarts.init(document.getElementById('result2'));
             myChart2.setOption(option2);
         });

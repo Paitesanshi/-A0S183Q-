@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-    <title>3D中国</title>
+    <title>请选择城市</title>
     <script src="../static/js/jquery.min.js"></script>
     <script src="../static/js/echarts.min.js"></script>
     <script src="../static/js/echarts-gl.js"></script>
@@ -394,7 +394,7 @@
     mycharts.setOption(option);
     $(document).ready(function() {
         namespace = '/test';
-        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace);
         console.log(socket)
         socket.emit("1111")
         socket.on('server_response', function(res) {
