@@ -78,3 +78,7 @@ AttributeError: 'method' object has no attribute 'password'
 7.11
 继续编写文档
 制作ppt
+
+7.12
+测试bug
+写文档
