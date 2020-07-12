@@ -74,3 +74,4 @@ virtualenvwrapper依旧无法安装，更新pip没有用，换成清华的源解
 flask前端已经全部正常，java出现跨域访问问题
 7.12
 查bug，写文档，处理小问题，看java跨域
+芜湖起飞，加了flask-cors并忽略端口后可以正常跨域访问了，部署全部完成
