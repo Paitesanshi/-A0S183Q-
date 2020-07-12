@@ -72,3 +72,5 @@ virtualenvwrapper依旧无法安装，更新pip没有用，换成清华的源解
 安jdk和tomcat，部署前端
 出现了socketio连不上的问题，mysql的loaclhost对不上
 flask前端已经全部正常，java出现跨域访问问题
+7.12
+查bug，写文档，处理小问题，看java跨域
